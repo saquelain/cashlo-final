@@ -124,3 +124,73 @@ body {
     transform: translateY(-3px);
   }
 }
+
+/* Orbit constellation */
+.orbit-stage {
+  position: relative;
+  --ri: 150px; /* inner ring radius */
+  --ro: 270px; /* outer ring radius */
+  --spread: 0; /* entrance: 0 = collapsed at center, 1 = full radius */
+}
+
+.orbit-track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--d);
+  height: var(--d);
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgb(0 0 0 / 0.08);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.orbit-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+}
+
+.orbit-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* placed on the circle; --spread animates it out from the center */
+  transform: rotate(var(--a)) translateX(calc(var(--r) * var(--spread)));
+}
+
+.orbit-pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  border-radius: 9999px;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  background: #fff;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgb(10 10 10 / 0.7);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.04);
+  cursor: default;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.orbit-pill.is-hot {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+  box-shadow: 0 10px 26px -6px var(--color-brand);
+}
