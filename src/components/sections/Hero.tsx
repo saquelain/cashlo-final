@@ -20,7 +20,7 @@ export default function Hero() {
         playsInline
         poster="/videos/hero-poster.jpg"
       >
-        <source src="/videos/hero.mp4" type="video/mp4" />
+        <source src="/videos/hero2.mp4" type="video/mp4" />
       </video>
 
       {/* Dark gradient so white text stays readable */}

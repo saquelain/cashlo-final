@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { navItems } from "./navData";
@@ -7,13 +8,26 @@ import NavDropdown from "./NavDropdown";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll(); // set correct state on mount / refresh mid-page
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled ? "border-b border-black/5 bg-white/90 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        {/* Logo */}
+        {/* Logo — white over hero, color once scrolled */}
         <Link href="/" className="flex items-center">
           <Image
-            src="/logo/cashlo-logo.png"
+            src={scrolled ? "/logo/cashlo-logo.png" : "/logo/cashlo-logo-white.png"}
             alt="Cashlo"
             width={140}
             height={40}
@@ -22,22 +36,28 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Center nav — hidden on mobile for now */}
-        <div className="hidden items-center gap-1 rounded-full border border-black/5 bg-white/70 px-2 py-1.5 shadow-sm backdrop-blur-md lg:flex">
+        {/* Center nav */}
+        <div
+          className={`hidden items-center gap-1 rounded-full border px-2 py-1.5 shadow-sm backdrop-blur-md transition-colors lg:flex ${
+            scrolled
+              ? "border-black/5 bg-white/70"
+              : "border-white/20 bg-white/10"
+          }`}
+        >
           {navItems.map((item) => (
-            <NavDropdown key={item.label} item={item} />
+            <NavDropdown key={item.label} item={item} scrolled={scrolled} />
           ))}
         </div>
 
-        {/* Right side: CTA on desktop, hamburger on mobile */}
+        {/* Right side */}
         <div className="flex items-center gap-3">
-            <Link
-                href="/become-merchant"
-                className="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark lg:block"
-            >
-                Become Merchant
-            </Link>
-            <MobileMenu />
+          <Link
+            href="/become-merchant"
+            className="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark lg:block"
+          >
+            Become Merchant
+          </Link>
+          <MobileMenu />
         </div>
       </nav>
     </header>
