@@ -24,3 +24,23 @@ body {
 [data-reveal] {
   opacity: 1;
 }
+
+.invert-stage {
+  position: relative;
+  --edge: 120%; /* pre-JS: fully blue, no flash before hydration */
+}
+
+/* Blue region = everything ABOVE the chevron edge. Background paints first,
+   so the white text inside sits on top of it (this was the inversion bug). */
+.invert-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-brand);
+  clip-path: polygon(
+    0% -20%,
+    100% -20%,
+    100% var(--edge),
+    50% calc(var(--edge) - 14%),
+    0% var(--edge)
+  );
+}
