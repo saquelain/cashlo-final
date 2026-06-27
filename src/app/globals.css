@@ -44,3 +44,20 @@ body {
     0% var(--edge)
   );
 }
+
+/* Step-timeline node activation */
+.tl-dot {
+  transition:
+    background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.timeline-row.is-active .tl-dot {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px -8px var(--color-brand);
+}
