@@ -1,7 +1,7 @@
 "use client";
 
 import Container from "@/components/ui/Container";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSpotlight } from "@/hooks/useSpotlight";
 
 const benefits = [
   {
@@ -31,14 +31,17 @@ const benefits = [
 ];
 
 export default function WhyChoose() {
-  const scope = useScrollReveal();
+  const { scope, gridRef } = useSpotlight();
 
   return (
     <section ref={scope} className="bg-white py-24">
       <Container>
         {/* Heading */}
         <div className="max-w-2xl">
-          <p data-reveal className="text-sm font-semibold uppercase tracking-wider text-brand">
+          <p
+            data-reveal
+            className="text-sm font-semibold uppercase tracking-wider text-brand"
+          >
             Why Choose Cashlo
           </p>
           <h2
@@ -54,22 +57,23 @@ export default function WhyChoose() {
         </div>
 
         {/* Grid */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          ref={gridRef}
+          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {benefits.map((b, i) => (
-            <div
-              key={b.title}
-              data-reveal
-              className="group rounded-2xl border border-black/5 bg-white p-7 transition-all hover:border-brand/20 hover:shadow-xl hover:shadow-brand/5"
-            >
-              <span className="text-sm font-bold text-brand/40">
-                0{i + 1}
-              </span>
-              <h3 className="mt-3 text-xl font-semibold text-ink">
-                {b.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/60">
-                {b.desc}
-              </p>
+            <div key={b.title} data-card className="spotlight-card">
+              <div className="spotlight-card__inner">
+                <span className="text-sm font-bold text-brand/40">
+                  0{i + 1}
+                </span>
+                <h3 className="mt-3 text-xl font-semibold text-ink">
+                  {b.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink/60">
+                  {b.desc}
+                </p>
+              </div>
             </div>
           ))}
         </div>
