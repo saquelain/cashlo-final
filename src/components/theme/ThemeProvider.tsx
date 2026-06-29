@@ -44,8 +44,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       ).matches;
 
       // Fallback: no API support, reduced motion, or no click coords
-      // @ts-expect-error - startViewTransition is newish
-      if (!document.startViewTransition || reduce || !e) {
+    if (!(document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }).startViewTransition || reduce || !e) {
         apply();
         return;
       }
@@ -56,8 +55,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         Math.max(y, window.innerHeight - y)
       );
 
-      // @ts-expect-error - startViewTransition is newish
-      const transition = document.startViewTransition(apply);
+      const transition = (document as Document & { startViewTransition: (cb: () => void) => { ready: Promise<void> } }).startViewTransition(apply);
       transition.ready.then(() => {
         document.documentElement.animate(
           {
