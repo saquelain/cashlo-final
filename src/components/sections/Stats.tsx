@@ -30,15 +30,15 @@ export default function Stats() {
           ref={revealScope}
           className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:grid-rows-2"
         >
-          {/* Featured — inverted white card spanning 2×2 */}
+          {/* Featured — card spanning 2×2 */}
           <article
             data-reveal
-            className="relative col-span-2 flex flex-col justify-between overflow-hidden rounded-3xl bg-white p-8 lg:row-span-2"
+            className="relative col-span-2 flex flex-col justify-between overflow-hidden rounded-3xl bg-card p-8 lg:row-span-2"
           >
             {/* faded watermark number for depth */}
             <span
               aria-hidden
-              className="pointer-events-none absolute -right-4 -top-10 select-none text-[11rem] font-black leading-none text-brand/[0.06]"
+              className="pointer-events-none absolute -right-4 -top-10 select-none text-[11rem] font-black leading-none text-brand/10"
             >
               1M
             </span>
@@ -62,7 +62,7 @@ export default function Stats() {
             </div>
           </article>
 
-          {/* 50,000+ — wide glass card */}
+          {/* 50,000+ — glass card */}
           <article
             data-reveal
             className="col-span-2 flex flex-col justify-center rounded-3xl border border-white/15 bg-white/10 p-7 backdrop-blur-sm transition hover:bg-white/[0.16]"

@@ -4,12 +4,16 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import type { NavItem } from "./navData";
 
-export default function NavDropdown({ item, scrolled }: { item: NavItem; scrolled: boolean }) {
+export default function NavDropdown({
+  item,
+  scrolled,
+}: {
+  item: NavItem;
+  scrolled: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // small delay on leave so the dropdown doesn't vanish if the cursor
-  // briefly leaves the gap between label and panel
   const handleEnter = () => {
     if (timeout.current) clearTimeout(timeout.current);
     setOpen(true);
@@ -18,12 +22,17 @@ export default function NavDropdown({ item, scrolled }: { item: NavItem; scrolle
     timeout.current = setTimeout(() => setOpen(false), 120);
   };
 
+  // label color: white over the hero, themed once the bar is solid
+  const label = scrolled
+    ? "text-ink/80 hover:text-ink"
+    : "text-white/80 hover:text-white";
+
   // Plain link, no dropdown
   if (!item.children) {
     return (
       <Link
         href={item.href ?? "#"}
-        className="px-4 py-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink"
+        className={`px-4 py-2 text-sm font-medium transition-colors ${label}`}
       >
         {item.label}
       </Link>
@@ -32,13 +41,9 @@ export default function NavDropdown({ item, scrolled }: { item: NavItem; scrolle
 
   // Dropdown item
   return (
-    <div
-      className="relative"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-    >
+    <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <button
-        className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink"
+        className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors ${label}`}
         aria-expanded={open}
       >
         {item.label}
@@ -64,7 +69,7 @@ export default function NavDropdown({ item, scrolled }: { item: NavItem; scrolle
             : "pointer-events-none -translate-y-1 opacity-0"
         }`}
       >
-        <div className="min-w-[230px] rounded-2xl border border-black/5 bg-white p-2 shadow-xl shadow-black/5">
+        <div className="min-w-[230px] rounded-2xl border border-border bg-card p-2 shadow-xl shadow-black/5">
           {item.children.map((child) => (
             <Link
               key={child.label}

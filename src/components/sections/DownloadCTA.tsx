@@ -12,10 +12,10 @@ export default function DownloadCTA() {
   const { scope, stageRef } = useColorInvert();
 
   return (
-    <section ref={scope} className="overflow-hidden bg-white py-24">
+    <section ref={scope} className="overflow-hidden bg-bg py-24">
       {/* Full-bleed inversion stage — text blocks inside stay centered */}
       <div ref={stageRef} className="invert-stage relative">
-        {/* Base layer — blue text on white */}
+        {/* Base layer — brand text on page bg */}
         <div className="px-6 py-16 text-center sm:py-24">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-5xl font-bold tracking-tight text-brand sm:text-7xl lg:text-8xl">
@@ -27,7 +27,7 @@ export default function DownloadCTA() {
           </div>
         </div>
 
-        {/* Overlay — blue bg + identical WHITE text, clipped to the chevron */}
+        {/* Overlay — brand bg + identical WHITE text, clipped to the chevron */}
         <div className="invert-overlay" aria-hidden>
           <div className="px-6 py-16 text-center sm:py-24">
             <div className="mx-auto max-w-5xl">
@@ -42,7 +42,7 @@ export default function DownloadCTA() {
         </div>
       </div>
 
-      {/* Buttons — outside the inversion, always on white */}
+      {/* Buttons */}
       <Container>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link

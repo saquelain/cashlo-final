@@ -1,41 +1,65 @@
 @import "tailwindcss";
 
-@theme {
-  --color-brand: #445df0;
-  --color-brand-dark: #2f44c9;
-  --color-ink: #0a0a0a;
+/* lets us write dark:* utilities when a token won't cover an edge case */
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* expose Next's font variables to Tailwind */
+/* ---- Theme tokens: raw values swap under .dark ---- */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;        /* page background        (bg-white)      */
+  --surface: #f9fafb;   /* recessed gray sections (bg-gray-50)    */
+  --card: #ffffff;      /* raised cards / pills                   */
+  --ink: #0a0a0a;       /* primary text           (text-ink)      */
+  --border: rgb(0 0 0 / 0.07);
+  --brand: #445df0;
+  --brand-dark: #2f44c9;
+}
+.dark {
+  color-scheme: dark;
+  --bg: #0b0d12;
+  --surface: #0f1219;
+  --card: #161922;
+  --ink: #f3f4f6;
+  --border: rgb(255 255 255 / 0.10);
+  --brand: #5b72f5;     /* lifted so it pops on dark */
+  --brand-dark: #4258e0;
+}
+
+/* inline => utilities reference the swappable var directly, so they flip */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 html,
 body {
-  background: #ffffff;
-  color: var(--color-ink);
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  /* Lenis needs this so the browser doesn't fight the smooth scroll */
   scroll-behavior: auto !important;
 }
 
-/* Failsafe: content stays visible if JS/ScrollTrigger doesn't run.
-   GSAP sets inline styles that override this once it animates. */
 [data-reveal] {
   opacity: 1;
 }
 
+/* ---- Scroll-inversion CTA ---- */
 .invert-stage {
   position: relative;
-  --edge: 120%; /* pre-JS: fully blue, no flash before hydration */
+  --edge: 120%;
 }
-
-/* Blue region = everything ABOVE the chevron edge. Background paints first,
-   so the white text inside sits on top of it (this was the inversion bug). */
 .invert-overlay {
   position: absolute;
   inset: 0;
-  background: var(--color-brand);
+  background: var(--color-brand); /* brand surface — stays brand in dark */
   clip-path: polygon(
     0% -20%,
     100% -20%,
@@ -45,7 +69,7 @@ body {
   );
 }
 
-/* Step-timeline node activation */
+/* ---- Step-timeline node activation ---- */
 .tl-dot {
   transition:
     background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -57,18 +81,17 @@ body {
 .timeline-row.is-active .tl-dot {
   background: var(--color-brand);
   border-color: var(--color-brand);
-  color: #fff;
+  color: #fff; /* text on brand fill — stays white */
   transform: scale(1.08);
   box-shadow: 0 12px 30px -8px var(--color-brand);
 }
 
-/* Spotlight cards — cursor-tracked glow + lit border */
+/* ---- Spotlight cards ---- */
 .spotlight-card {
   --mx: 50%;
   --my: 50%;
   position: relative;
   border-radius: 1rem;
-  /* the lit border: a radial gradient revealed only on the 1px frame via mask */
   padding: 1px;
   background: radial-gradient(
     220px circle at var(--mx) var(--my),
@@ -76,14 +99,13 @@ body {
     transparent 65%
   );
 }
-/* base (unlit) border sits underneath so cards always have an edge */
 .spotlight-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: rgb(0 0 0 / 0.07);
+  background: var(--border);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -91,17 +113,17 @@ body {
   mask-composite: exclude;
   pointer-events: none;
 }
-
 .spotlight-card__inner {
   position: relative;
   height: 100%;
   border-radius: calc(1rem - 1px);
-  background: #fff;
+  background: var(--card);
   padding: 1.75rem;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease;
 }
-/* surface glow that brightens where the cursor is */
 .spotlight-card__inner::before {
   content: "";
   position: absolute;
@@ -109,7 +131,7 @@ body {
   border-radius: inherit;
   background: radial-gradient(
     300px circle at var(--mx) var(--my),
-    rgb(68 93 240 / 0.08) 0%,
+    color-mix(in srgb, var(--color-brand) 12%, transparent) 0%,
     transparent 60%
   );
   opacity: 0;
@@ -125,14 +147,13 @@ body {
   }
 }
 
-/* Orbit constellation */
+/* ---- Orbit constellation ---- */
 .orbit-stage {
   position: relative;
-  --ri: 150px; /* inner ring radius */
-  --ro: 270px; /* outer ring radius */
-  --spread: 0; /* entrance: 0 = collapsed at center, 1 = full radius */
+  --ri: 150px;
+  --ro: 270px;
+  --spread: 0;
 }
-
 .orbit-track {
   position: absolute;
   left: 50%;
@@ -140,11 +161,10 @@ body {
   width: var(--d);
   height: var(--d);
   transform: translate(-50%, -50%);
-  border: 1px dashed rgb(0 0 0 / 0.08);
+  border: 1px dashed var(--border);
   border-radius: 9999px;
   pointer-events: none;
 }
-
 .orbit-hub {
   position: absolute;
   left: 50%;
@@ -153,33 +173,29 @@ body {
   display: grid;
   place-items: center;
 }
-
 .orbit-ring {
   position: absolute;
   inset: 0;
   transform-origin: center center;
 }
-
 .orbit-slot {
   position: absolute;
   left: 50%;
   top: 50%;
-  /* placed on the circle; --spread animates it out from the center */
   transform: rotate(var(--a)) translateX(calc(var(--r) * var(--spread)));
 }
-
 .orbit-pill {
   position: absolute;
   left: 0;
   top: 0;
   white-space: nowrap;
   border-radius: 9999px;
-  border: 1px solid rgb(0 0 0 / 0.1);
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--card);
   padding: 0.35rem 0.85rem;
   font-size: 0.72rem;
   font-weight: 500;
-  color: rgb(10 10 10 / 0.7);
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.04);
   cursor: default;
   transition:
@@ -193,4 +209,21 @@ body {
   color: #fff;
   border-color: var(--color-brand);
   box-shadow: 0 10px 26px -6px var(--color-brand);
+}
+
+/* ---- View Transitions: circular theme reveal ---- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) { z-index: 1; }
+::view-transition-old(root) { z-index: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

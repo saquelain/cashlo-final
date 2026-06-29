@@ -32,7 +32,7 @@ export default function Trust() {
   const { scope, pinRef, trackRef } = useHorizontalCards();
 
   return (
-    <section ref={scope} className="bg-white">
+    <section ref={scope} className="bg-bg">
       <div
         ref={pinRef}
         className="relative overflow-hidden md:flex md:h-screen md:flex-col"

@@ -6,28 +6,40 @@ import Image from "next/image";
 import { navItems } from "./navData";
 import NavDropdown from "./NavDropdown";
 import MobileMenu from "./MobileMenu";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll(); // set correct state on mount / refresh mid-page
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // color logo only when the bar is solid-white (scrolled + light); else white logo
+  const useColorLogo = scrolled && theme === "light";
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "border-b border-black/5 bg-white/90 backdrop-blur-md" : "bg-transparent"
+        scrolled
+          ? "border-b border-border bg-bg/90 backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        {/* Logo — white over hero, color once scrolled */}
+        {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image
-            src={scrolled ? "/logo/cashlo-logo.png" : "/logo/cashlo-logo-white.png"}
+            src={
+              useColorLogo
+                ? "/logo/cashlo-logo.png"
+                : "/logo/cashlo-logo-white.png"
+            }
             alt="Cashlo"
             width={140}
             height={40}
@@ -40,7 +52,7 @@ export default function Navbar() {
         <div
           className={`hidden items-center gap-1 rounded-full border px-2 py-1.5 shadow-sm backdrop-blur-md transition-colors lg:flex ${
             scrolled
-              ? "border-black/5 bg-white/70"
+              ? "border-border bg-bg/70"
               : "border-white/20 bg-white/10"
           }`}
         >
@@ -51,6 +63,7 @@ export default function Navbar() {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          <ThemeToggle onHero={!scrolled} />
           <Link
             href="/become-merchant"
             className="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark lg:block"

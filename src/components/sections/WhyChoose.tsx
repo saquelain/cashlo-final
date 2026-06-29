@@ -34,7 +34,7 @@ export default function WhyChoose() {
   const { scope, gridRef } = useSpotlight();
 
   return (
-    <section ref={scope} className="bg-white py-24">
+    <section ref={scope} className="bg-bg py-24">
       <Container>
         {/* Heading */}
         <div className="max-w-2xl">

@@ -18,7 +18,7 @@ export default function SupportedBy() {
   const { scope, stageRef, innerRef, outerRef } = useOrbit();
 
   return (
-    <section ref={scope} className="overflow-hidden bg-gray-50 py-24">
+    <section ref={scope} className="overflow-hidden bg-surface py-24">
       <Container className="text-center">
         <p
           data-reveal
@@ -97,7 +97,7 @@ export default function SupportedBy() {
           <span
             key={x}
             data-cloud-item
-            className="whitespace-nowrap rounded-full border border-black/10 bg-white px-4 py-2 text-xs font-medium text-ink/70 shadow-sm"
+            className="whitespace-nowrap rounded-full border border-border bg-card px-4 py-2 text-xs font-medium text-ink/70 shadow-sm"
           >
             {x}
           </span>

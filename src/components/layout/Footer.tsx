@@ -16,17 +16,25 @@ const social = ["Facebook", "Instagram", "LinkedIn", "YouTube"];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-black/5 bg-gray-50 pt-16">
+    <footer className="border-t border-border bg-surface pt-16">
       <Container>
         <div className="grid gap-10 pb-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
+            {/* color logo in light, white logo in dark */}
             <Image
               src="/logo/cashlo-logo.png"
               alt="Cashlo"
               width={140}
               height={40}
-              className="h-9 w-auto object-contain"
+              className="h-9 w-auto object-contain dark:hidden"
+            />
+            <Image
+              src="/logo/cashlo-logo-white.png"
+              alt="Cashlo"
+              width={140}
+              height={40}
+              className="hidden h-9 w-auto object-contain dark:block"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink/60">
               India&apos;s trusted UPI CashPoint network — helping local
@@ -73,8 +81,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-black/5 py-6">
+        <div className="border-t border-border py-6">
           <p className="text-xs leading-relaxed text-ink/45">
             Copyright © {new Date().getFullYear()} Cashlo. All Rights Reserved.
             Transaction availability, limits and eligibility are subject to

@@ -34,7 +34,7 @@ export default function HowItWorks() {
   const { scope, trackRef } = useStepTimeline();
 
   return (
-    <section ref={scope} className="bg-gray-50 py-24">
+    <section ref={scope} className="bg-surface py-24">
       <Container>
         {/* Heading */}
         <div className="mx-auto max-w-2xl text-center">
@@ -83,7 +83,7 @@ export default function HowItWorks() {
                 >
                   {/* Node on the axis */}
                   <div className="absolute left-6 top-1 -translate-x-1/2 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2">
-                    <div className="tl-dot flex h-14 w-14 items-center justify-center rounded-full border-2 border-brand/25 bg-white text-xl font-bold text-brand">
+                    <div className="tl-dot flex h-14 w-14 items-center justify-center rounded-full border-2 border-brand/25 bg-card text-xl font-bold text-brand">
                       {s.num}
                     </div>
                   </div>

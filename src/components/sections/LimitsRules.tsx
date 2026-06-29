@@ -32,7 +32,7 @@ export default function LimitsRules() {
   const scope = useScrollReveal();
 
   return (
-    <section ref={scope} className="bg-white py-24">
+    <section ref={scope} className="bg-bg py-24">
       <Container>
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-12">
           {/* Left: Limits */}
@@ -84,7 +84,7 @@ export default function LimitsRules() {
                 <div
                   key={r.num}
                   data-reveal
-                  className="flex gap-4 rounded-2xl border border-black/5 p-5 transition-colors hover:border-brand/20"
+                  className="flex gap-4 rounded-2xl border border-border p-5 transition-colors hover:border-brand/20"
                 >
                   <div className="text-xl font-bold text-brand/40">{r.num}</div>
                   <div>
