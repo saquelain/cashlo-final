@@ -1,0 +1,61 @@
+"use client";
+
+import Container from "@/components/ui/Container";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+const rules = [
+  {
+    num: "01",
+    title: "Never Accept QR Screenshots",
+    desc: "Always generate a fresh Dynamic QR for every transaction. Never use photos or shared QR codes.",
+  },
+  {
+    num: "02",
+    title: "Maintain a Withdrawal Register",
+    desc: "Record customer name, mobile, amount, signature, and transaction reference (RRN) for every withdrawal.",
+  },
+  {
+    num: "03",
+    title: "Never Accept QR via WhatsApp",
+    desc: "Customers must be physically present. Don't process withdrawals from QR images shared on messaging apps.",
+  },
+];
+
+export default function ImportantRules() {
+  const scope = useScrollReveal();
+
+  return (
+    <section ref={scope} className="bg-bg pb-24">
+      <Container>
+        <p
+          data-reveal
+          className="text-sm font-semibold uppercase tracking-wider text-brand"
+        >
+          Important Rules
+        </p>
+        <h2
+          data-reveal
+          className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl"
+        >
+          Three Rules Every Merchant Must Follow
+        </h2>
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {rules.map((r) => (
+            <div
+              key={r.num}
+              data-reveal
+              className="rounded-2xl border border-border p-6 transition-colors hover:border-brand/20"
+            >
+              <div className="text-xl font-bold text-brand/40">{r.num}</div>
+              <h3 className="mt-3 font-semibold text-ink">{r.title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-ink/60">
+                {r.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
