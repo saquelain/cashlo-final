@@ -14,7 +14,7 @@ const apps: Brand[] = [
   { name: "WhatsApp Pay", logo: "/logos/whatsapp.svg" },
   { name: "CRED", logo: "/logos/cred.svg" },
   { name: "SBI YONO", logo: "/logos/yono.svg" },
-  { name: "Axis Mobile", logo: "/logos/axis-mobile.svg" },
+  { name: "Axis Mobile", logo: "/logos/axis.svg" },
   { name: "PayZapp", logo: "/logos/payzapp.svg" },
   { name: "Kotak 811", logo: "/logos/kotak-811.svg" },
   { name: "Jio Finance", logo: "/logos/jio.svg" },
@@ -33,7 +33,7 @@ const banks: Brand[] = [
   { name: "IDFC FIRST", logo: "/logos/idfc.svg" },
   { name: "YES BANK", logo: "/logos/yes.svg" },
   { name: "Federal Bank", logo: "/logos/federal.svg" },
-  { name: "NSDL Payments Bank", logo: "/logos/nsdl.svg" },
+  { name: "NSDL Payments Bank", logo: "/logos/nsdl.png" },
 ];
 
 function Logo({ brand }: { brand: Brand }) {
