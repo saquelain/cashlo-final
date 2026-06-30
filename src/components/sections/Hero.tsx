@@ -39,15 +39,24 @@ export default function Hero() {
           data-fade
           className="max-w-3xl text-5xl font-bold leading-[1.05] text-white sm:text-6xl lg:text-7xl"
         >
-          Turn Your Shop Into a Cash Point
+          Turn Every Shop into a UPI CashPoint
         </h1>
+
+        <p
+          data-fade
+          className="mt-5 max-w-xl text-lg font-semibold uppercase tracking-wide text-brand sm:text-xl"
+        >
+          Scan. Pay. Collect Cash.
+        </p>
 
         <p
           data-fade
           className="mt-6 max-w-xl text-lg text-white/85"
         >
-          Accept UPI. Give Cash. Earn Every Day. Cashlo lets local merchants
-          offer instant cash withdrawal through UPI — secure, simple, and fast.
+          Cashlo is building India&apos;s next generation cash access network,
+          enabling people to withdraw cash through UPI at trusted
+          neighborhood merchants. More convenience for customers, more
+          earnings for merchants.
         </p>
 
         <div data-fade className="mt-8 flex flex-wrap gap-4">
