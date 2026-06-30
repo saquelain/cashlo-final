@@ -20,7 +20,7 @@ export default function Stats() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
           </span>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+          <p className="text-lg font-semibold uppercase tracking-[0.2em] text-white/70">
             Growing Every Day
           </p>
         </div>
