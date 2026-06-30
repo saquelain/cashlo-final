@@ -13,6 +13,8 @@ gsap.registerPlugin(ScrollTrigger);
  * - [data-pulse] : a glowing dot riding the tip of the draw
  * - [data-row]   : each step; gets .is-active as the line reaches it
  * - [data-content]: image/text blocks that fade up when their row activates
+ * - [data-parallax-img]: step images that drift within their fixed frame
+ *   as their row scrolls through the viewport (ambient, not pinned).
  */
 export function useStepTimeline() {
   const scope = useRef<HTMLElement>(null);
@@ -42,6 +44,7 @@ export function useStepTimeline() {
       const fill = track?.querySelector<HTMLElement>("[data-fill]");
       const pulse = track?.querySelector<HTMLElement>("[data-pulse]");
       const rows = gsap.utils.toArray<HTMLElement>("[data-row]");
+      const parallaxImgs = gsap.utils.toArray<HTMLElement>("[data-parallax-img]");
 
       if (reduce) {
         if (fill) gsap.set(fill, { scaleY: 1 });
@@ -50,8 +53,26 @@ export function useStepTimeline() {
           r.classList.add("is-active");
           gsap.set(r.querySelectorAll("[data-content]"), { clearProps: "all" });
         });
+        gsap.set(parallaxImgs, { yPercent: 0 });
         return;
       }
+
+      // Parallax: each step image drifts within its frame as the row
+      // scrolls past. Independent per-image ScrollTrigger (not pinned,
+      // not part of the shared draw-line timeline) so the card and text
+      // keep scrolling at normal speed while only the image inside drifts.
+      parallaxImgs.forEach((img) => {
+        gsap.to(img, {
+          yPercent: -12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      });
 
       // 1) Draw the line + travel the pulse — one scrubbed timeline
       // Draw the line, travel the pulse, and activate nodes from the pulse's

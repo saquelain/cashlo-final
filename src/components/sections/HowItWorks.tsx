@@ -95,11 +95,12 @@ export default function HowItWorks() {
                       textLeft ? "lg:order-2" : "lg:order-1"
                     }`}
                   >
-                    <div className="overflow-hidden rounded-2xl shadow-sm">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-sm">
                       <img
+                        data-parallax-img
                         src={s.img}
                         alt={s.title}
-                        className="aspect-[4/3] w-full object-cover"
+                        className="absolute inset-x-0 -top-[15%] h-[135%] w-full object-cover"
                       />
                     </div>
                   </div>
