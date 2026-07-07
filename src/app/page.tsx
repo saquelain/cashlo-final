@@ -19,9 +19,9 @@ export default function Home() {
       <WhyChoose />
       <HowItWorks />
       <WithdrawalLimits />
-      <ImportantRules />
       {/* <LimitsRules /> */}
       <SupportedBy />
+      <ImportantRules />
       <DownloadCTA />
       <Footer />
     </main>

@@ -12,7 +12,7 @@ export default function DownloadCTA() {
   const { scope, stageRef } = useColorInvert();
 
   return (
-    <section ref={scope} className="overflow-hidden bg-bg py-24">
+    <section ref={scope} className="overflow-hidden bg-bg pb-24">
       {/* Full-bleed inversion stage — text blocks inside stay centered */}
       <div ref={stageRef} className="invert-stage relative">
         {/* Base layer — brand text on page bg */}

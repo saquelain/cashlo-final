@@ -265,3 +265,31 @@ body {
   background-size: cover;
   background-position: center;
 }
+
+/* ---- Morphing rules scene ---- */
+.morph-wrap {
+  position: relative;
+  width: min(70vmin, 560px);
+  aspect-ratio: 1;
+  will-change: transform;
+}
+.morph-wrap svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.morph-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  translate: -50% -50%; /* centering via CSS `translate` so GSAP's transform stacks on top */
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 1.5rem;
+  box-shadow: 0 20px 50px -20px rgb(0 0 0 / 0.25);
+  will-change: transform;
+}
