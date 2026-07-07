@@ -65,18 +65,31 @@ export function useMorphRules() {
           scope.current!
         );
 
+        // read the live theme's brand color once (light: #445df0, dark: #5b72f5)
+        const v = getComputedStyle(document.documentElement)
+          .getPropertyValue("--brand")
+          .trim();
+        const BRAND =
+          v.startsWith("#") && v.length === 7
+            ? [
+                parseInt(v.slice(1, 3), 16),
+                parseInt(v.slice(3, 5), 16),
+                parseInt(v.slice(5, 7), 16),
+              ]
+            : COLORS.brand; // fallback
+
         // mutable morph state — the timeline tweens these arrays
-        const S = { r: [...SHAPES.blob], rot: 0, c: [...COLORS.light] };
+        const S = { r: [...SHAPES.blob], rot: 0, c: [...COLORS.light], b: 0 };
 
         const tick = (time: number) => {
           const wob = reduce
             ? S.r
             : S.r.map((v, i) => v + Math.sin(time * 1.6 + i) * 0.015);
           shape.setAttribute("d", blobPath(wob, 600, S.rot));
-          shape.setAttribute(
-            "fill",
-            `rgb(${S.c[0] | 0},${S.c[1] | 0},${S.c[2] | 0})`
-          );
+          shape.style.fill =
+            S.b >= 0.999
+              ? "var(--brand)" // live CSS var — follows theme toggles automatically
+              : `rgb(${S.c[0] | 0},${S.c[1] | 0},${S.c[2] | 0})`;
         };
         gsap.ticker.add(tick);
 
@@ -95,7 +108,7 @@ export function useMorphRules() {
         if (reduce) {
           // static fallback: emerged cards around a brand circle, no pin
           S.r = [...SHAPES.circle];
-          S.c = [...COLORS.brand];
+          S.c = [...BRAND];
           gsap.set(cards[0], { opacity: 1, scale: 1, xPercent: -118 });
           gsap.set(cards[1], { opacity: 1, scale: 1, xPercent: 118 });
           gsap.set(cards[2], { opacity: 1, scale: 1, yPercent: 95 });
@@ -140,18 +153,24 @@ export function useMorphRules() {
           /* STAGE 4 — absorb cards; shape becomes a BRAND CIRCLE */
           .to(cards, { xPercent: 0, yPercent: 0, scale: 0, opacity: 0, duration: 1, stagger: 0.12, ease: "power3.in" }, "+=.7")
           .to(S.r, { endArray: SHAPES.circle, duration: 1.2 }, "<")
-          .to(S.c, { endArray: COLORS.brand, duration: 1.2 }, "<")
-          .to(S,   { rot: 1.6, duration: 1.2 }, "<")
+          .to(S.c, { endArray: BRAND, duration: 1.2 }, "<")
+          .to(S, { rot: 1.6, b: 1, duration: 1.2 }, "<")
 
           /* STAGE 5 — the circle swallows the screen */
           .to("[data-morph-head]", { opacity: 0, duration: 0.4 }, "+=.3")
           .to(wrap, { scale: () => coverScale, duration: 2.2, ease: "power2.in" }, "<")
+          // .to(
+          //   scope.current,
+          //   { backgroundColor: `rgb(${BRAND.join(",")})`, duration: 0.6 },
+          //   "<+=1.2"
+          // )
           .fromTo(
             "[data-morph-final]",
             { opacity: 0, y: 40 },
             { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
             "-=.9"
-          ).to({}, { duration: 2 });
+          )
+          .to({}, { duration: 2 });
 
         return () => {
           gsap.ticker.remove(tick);
