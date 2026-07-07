@@ -227,3 +227,20 @@ body {
     animation: none !important;
   }
 }
+
+/* ---- 3D benefits carousel ---- */
+.ring-stage {
+  perspective: 2000px;
+}
+.ring3d {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.ring3d__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
