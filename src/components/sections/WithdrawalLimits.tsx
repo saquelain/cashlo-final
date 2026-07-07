@@ -14,8 +14,16 @@ const limits = [
 export default function WithdrawalLimits() {
   const { scope, pinRef, stackRef } = useLimitsStack();
 
+  // asymmetric spans: wide/narrow alternating per row
+  const spans = [
+    "md:col-span-7",
+    "md:col-span-5",
+    "md:col-span-5",
+    "md:col-span-7",
+  ];
+
   return (
-    <section ref={scope} className="bg-bg py-24">
+    <section ref={scope} className="bg-surface py-20">
       <Container>
         <div ref={pinRef}>
           <p
@@ -31,38 +39,30 @@ export default function WithdrawalLimits() {
             Clear, Transparent Limits
           </h2>
 
-          <div className="mt-10 flex justify-center">
-            <div
-              ref={stackRef}
-              className="flex w-full flex-col gap-4 md:relative md:block md:h-[38rem] md:w-[calc(2*32rem+2rem)]"
-            >
-              {limits.map((l, i) => (
-                <div
-                  key={l.label}
-                  data-card
-                  data-index={i}
-                  className="relative h-56 w-full overflow-hidden rounded-2xl md:absolute md:left-1/2 md:top-1/2 md:h-64 md:w-[32rem] md:-translate-x-1/2 md:-translate-y-1/2"
-                >
-                  <Image
-                    src={l.img}
-                    alt={l.label}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-                  <div className="absolute inset-x-0 bottom-0 p-6">
-                    <div className="flex items-baseline text-3xl font-bold text-white sm:text-4xl">
-                      <span>{l.prefix}</span>
-                      <span data-value data-target={l.target}>
-                        0
-                      </span>
-                      <span>{l.suffix}</span>
-                    </div>
-                    <div className="mt-1 text-sm text-white/80">{l.label}</div>
+          {/* Full-width bento grid — the deck peels into these real positions */}
+          <div
+            ref={stackRef}
+            className="relative mt-12 grid gap-4 md:grid-cols-12 md:gap-6"
+          >
+            {limits.map((l, i) => (
+              <div
+                key={l.label}
+                data-card
+                data-index={i}
+                className={`relative h-56 overflow-hidden rounded-2xl md:h-72 ${spans[i]}`}
+              >
+                <Image src={l.img} alt={l.label} fill className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+                <div className="absolute inset-x-0 bottom-0 p-6">
+                  <div className="flex items-baseline text-3xl font-bold text-white sm:text-4xl">
+                    <span>{l.prefix}</span>
+                    <span data-value data-target={l.target}>0</span>
+                    <span>{l.suffix}</span>
                   </div>
+                  <div className="mt-1 text-sm text-white/80">{l.label}</div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 

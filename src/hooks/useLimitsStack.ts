@@ -45,41 +45,24 @@ export function useLimitsStack() {
         const reduce = window.matchMedia(
           "(prefers-reduced-motion: reduce)"
         ).matches;
-
-        // -- Phase 0: instant starting "deck of cards" state --
-        const stackOffsets = [-8, 4, -4, 8]; // degrees, per card index
-        cards.forEach((card, i) => {
-          gsap.set(card, {
-            rotation: stackOffsets[i] ?? 0,
-            y: i * -6,
-            x: 0,
-            zIndex: i,
-          });
-        });
+        const stackOffsets = [-8, 4, -4, 8];
 
         if (reduce) {
-          // skip straight to the settled, counted-up end state
-          cards.forEach((card) => gsap.set(card, { rotation: 0, y: 0, x: 0 }));
           values.forEach((v) => {
             v.textContent = v.getAttribute("data-target");
           });
           return;
         }
 
-        const cardWidth = 512;
-        const cardHeight = 256;
-        const gap = 32; // bumped from 24
-        const colSpacing = cardWidth + gap;
-        const rowSpacing = cardHeight + gap;
+        // offset from each card's real grid position to the grid's center
+        const toCenter = (card: HTMLElement, axis: "x" | "y") => {
+          const cx = stack.clientWidth / 2;
+          const cy = stack.clientHeight / 2;
+          return axis === "x"
+            ? cx - (card.offsetLeft + card.offsetWidth / 2)
+            : cy - (card.offsetTop + card.offsetHeight / 2);
+        };
 
-        const gridPositions = [
-        { x: -colSpacing / 2, y: -rowSpacing / 2 },
-        { x: colSpacing / 2, y: -rowSpacing / 2 },
-        { x: -colSpacing / 2, y: rowSpacing / 2 },
-        { x: colSpacing / 2, y: rowSpacing / 2 },
-        ];
-
-        // -- Phase 1 + 2: one scrubbed, pinned timeline --
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: pin,
@@ -92,18 +75,27 @@ export function useLimitsStack() {
         });
 
         cards.forEach((card, i) => {
-            tl.to(
-                card,
-                {
-                rotation: 0,
-                x: gridPositions[i]?.x ?? 0,
-                y: gridPositions[i]?.y ?? 0,
-                zIndex: 10 + i,
-                duration: 1,
-                ease: "power2.out",
-                },
-                i === 0 ? 0 : "<0.3"
-            );
+          // instant page-load state: gathered into a messy center deck
+          gsap.set(card, {
+            x: () => toCenter(card, "x"),
+            y: () => toCenter(card, "y"),
+            rotation: stackOffsets[i] ?? 0,
+            zIndex: i,
+          });
+
+          // peel home to its real grid slot
+          tl.to(
+            card,
+            {
+              x: 0,
+              y: 0,
+              rotation: 0,
+              zIndex: 10 + i,
+              duration: 1,
+              ease: "power2.out",
+            },
+            i === 0 ? 0 : "<0.3"
+          );
         });
 
         if (values.length) {
@@ -120,6 +112,10 @@ export function useLimitsStack() {
             "+=0.2"
           );
         }
+
+        return () => {
+          gsap.set(cards, { clearProps: "transform,zIndex" });
+        };
       });
 
       /* ---------------- Mobile: simple, no pin ---------------- */
