@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useRef } from "react";
 import type { NavItem } from "./navData";
 
@@ -23,12 +22,10 @@ export default function NavDropdown({
     timeout.current = setTimeout(() => setOpen(false), 120);
   };
 
-  // label color: white over the hero, themed once the bar is solid
   const label = scrolled
     ? "text-ink/80 hover:text-ink"
     : "text-white/80 hover:text-white";
 
-  // Plain link, no dropdown
   if (!item.children) {
     return (
       <Link
@@ -40,7 +37,6 @@ export default function NavDropdown({
     );
   }
 
-  // Dropdown item
   return (
     <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <button
@@ -62,7 +58,6 @@ export default function NavDropdown({
         </svg>
       </button>
 
-      {/* Dropdown panel */}
       <div
         className={`absolute left-0 top-full pt-2 transition-all duration-200 ${
           open
@@ -71,22 +66,21 @@ export default function NavDropdown({
         }`}
       >
         <div className="min-w-[340px] rounded-2xl border border-border bg-card p-3 shadow-xl shadow-black/5">
-          {item.children.map((child) => (
-            <Link
-              key={child.label}
-              href={child.href}
-              className="flex items-center gap-4 rounded-xl px-4 py-3.5 text-base text-ink/70 transition-colors hover:bg-brand/5 hover:text-brand"
-            >
-              <Image
-                src={child.icon}
-                alt=""
-                width={48}
-                height={48}
-                className="h-12 w-12 shrink-0 object-contain"
-              />
-              {child.label}
-            </Link>
-          ))}
+          {item.children.map((child) => {
+            const Icon = child.icon;
+            return (
+              <Link
+                key={child.label}
+                href={child.href}
+                className="flex items-center gap-4 rounded-xl px-4 py-3.5 text-base text-ink/70 transition-colors hover:bg-brand/5 hover:text-brand"
+              >
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand/10">
+                  <Icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
+                </span>
+                {child.label}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

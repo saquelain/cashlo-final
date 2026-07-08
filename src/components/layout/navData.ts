@@ -1,11 +1,25 @@
 // src/components/layout/navData.ts
 
-export type NavLink = { label: string; href: string; icon: string };
+import type { LucideIcon } from "lucide-react";
+import {
+  QrCode,
+  Landmark,
+  Smartphone,
+  Car,
+  ShieldCheck,
+  Tv,
+  Info,
+  HelpCircle,
+  Phone,
+  Wallet,
+} from "lucide-react";
+
+export type NavLink = { label: string; href: string; icon: LucideIcon };
 
 export type NavItem = {
   label: string;
-  href?: string; // direct link (no dropdown)
-  children?: NavLink[]; // dropdown items
+  href?: string;
+  children?: NavLink[];
 };
 
 export const navItems: NavItem[] = [
@@ -13,54 +27,27 @@ export const navItems: NavItem[] = [
   {
     label: "UPI CashPoint",
     children: [
-      {
-        label: "UPI CashPoint",
-        href: "/upi-cashpoint",
-        icon: "/icons/nav/cashpoint.png",
-      },
+      { label: "UPI CashPoint", href: "/upi-cashpoint", icon: QrCode },
     ],
   },
   {
     label: "Services",
     children: [
-      {
-        label: "Instant Loan",
-        href: "/services/instant-loan",
-        icon: "/icons/nav/instant-loan.png",
-      },
-      {
-        label: "Recharge & Bill Payments",
-        href: "/services/recharge-bills",
-        icon: "/icons/nav/recharge-bills.png",
-      },
-      {
-        label: "Travel (FASTag, NCMC)",
-        href: "/services/travel",
-        icon: "/icons/nav/travel.png",
-      },
-      {
-        label: "Finance & Insurance",
-        href: "/services/finance",
-        icon: "/icons/nav/finance-insurance.png",
-      },
-      {
-        label: "Entertainment (DTH, OTT)",
-        href: "/services/entertainment",
-        icon: "/icons/nav/entertainment.png",
-      },
-      {
-        label: "QuickKhata",
-        href: "/quickkhata",
-        icon: "/icons/nav/quickkhata.png",
-      }
+      { label: "Instant Loan", href: "/services/instant-loan", icon: Landmark },
+      { label: "Recharge & Bill Payments", href: "/services/recharge-bills", icon: Smartphone },
+      { label: "Travel (FASTag, NCMC)", href: "/services/travel", icon: Car },
+      { label: "Finance & Insurance", href: "/services/finance", icon: ShieldCheck },
+      { label: "Entertainment (DTH, OTT)", href: "/services/entertainment", icon: Tv },
+      { label: "QuickKhata", href: "/quickkhata", icon: Wallet },
+      
     ],
   },
   {
     label: "Company",
     children: [
-      { label: "About Us", href: "/about", icon: "/icons/nav/about.png" },
-      { label: "FAQ", href: "/faq", icon: "/icons/nav/faq.png" },
-      { label: "Contact", href: "/contact", icon: "/icons/nav/contact.png" },
+      { label: "About Us", href: "/about", icon: Info },
+      { label: "FAQ", href: "/faq", icon: HelpCircle },
+      { label: "Contact", href: "/contact", icon: Phone },
     ],
   },
 ];
