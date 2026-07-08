@@ -63,10 +63,10 @@ export default function ImportantRules() {
           className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center opacity-0"
         >
           <div className="max-w-xl px-6 text-center text-white">
-            <h3 className="text-3xl font-bold sm:text-4xl">
+            <h3 className="text-4xl font-bold sm:text-5xl">
               Follow the rules. Keep earning.
             </h3>
-            <p className="mt-3 text-white/80">
+            <p className="mt-4 text-lg text-white/80 sm:text-xl">
               Safe transactions protect you, your customers, and your
               commission.
             </p>
