@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   QrCode,
+  Store,
   Landmark,
   Calculator,
   Smartphone,
@@ -24,9 +25,10 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   {
-    label: "UPI CashPoint",
+    label: "UPI Service",
     children: [
       { label: "UPI CashPoint", href: "/upi-cashpoint", icon: QrCode },
+      { label: "UPI for Merchant", href: "/upi-for-merchant", icon: Store },
     ],
   },
   {
