@@ -1,17 +1,11 @@
 import type { LucideIcon } from "lucide-react";
 import {
   QrCode,
-  Store,
-  Landmark,
-  Calculator,
-  Smartphone,
-  Car,
-  ShieldCheck,
-  Tv,
-  Info,
-  HelpCircle,
-  Phone,
   Wallet,
+  Landmark,
+  Smartphone,
+  Coins,
+  FileText,
 } from "lucide-react";
 
 export type NavLink = { label: string; href: string; icon: LucideIcon };
@@ -25,31 +19,17 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   {
-    label: "UPI Service",
-    children: [
-      { label: "UPI CashPoint", href: "/upi-cashpoint", icon: QrCode },
-      { label: "UPI for Merchant", href: "/upi-for-merchant", icon: Store },
-    ],
-  },
-  {
     label: "Services",
     children: [
+      { label: "UPI Cash Point", href: "/upi-cashpoint", icon: QrCode },
+      { label: "Quick Khata", href: "/quickkhata", icon: Wallet },
       { label: "Instant Loan", href: "/services/instant-loan", icon: Landmark },
-      { label: "EMI Calculator", href: "/calculators/emi-calculator", icon: Calculator },
-      { label: "Recharge & Bill Payments", href: "/services/recharge-bills", icon: Smartphone },
-      { label: "Travel (FASTag, NCMC)", href: "/services/travel", icon: Car },
-      { label: "Finance & Insurance", href: "/services/finance", icon: ShieldCheck },
-      { label: "Entertainment (DTH, OTT)", href: "/services/entertainment", icon: Tv },
-      { label: "QuickKhata", href: "/quickkhata", icon: Wallet },
+      { label: "Recharge / Bill Pay", href: "/services/recharge-bills", icon: Smartphone },
+      { label: "Gold Loan / Invest in Gold", href: "/services/gold-loan", icon: Coins },
+      { label: "ITR Filing", href: "/services/itr-filing", icon: FileText },
     ],
   },
-  {
-    label: "Company",
-    children: [
-      { label: "About Us", href: "/about", icon: Info },
-      { label: "Blog", href: "/blog", icon: Info },
-      { label: "FAQ", href: "/faq", icon: HelpCircle },
-      { label: "Contact", href: "/contact", icon: Phone },
-    ],
-  },
+  { label: "About Us", href: "/about" },
+  { label: "Blogs", href: "/blog" },
+  { label: "Contact Us", href: "/contact" },
 ];
