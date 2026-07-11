@@ -47,6 +47,7 @@ export const navItems: NavItem[] = [
     label: "Company",
     children: [
       { label: "About Us", href: "/about", icon: Info },
+      { label: "Blog", href: "/blog", icon: Info },
       { label: "FAQ", href: "/faq", icon: HelpCircle },
       { label: "Contact", href: "/contact", icon: Phone },
     ],
