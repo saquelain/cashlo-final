@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* lets us write dark:* utilities when a token won't cover an edge case */
 @custom-variant dark (&:where(.dark, .dark *));

@@ -1,9 +1,8 @@
-// src/components/layout/navData.ts
-
 import type { LucideIcon } from "lucide-react";
 import {
   QrCode,
   Landmark,
+  Calculator,
   Smartphone,
   Car,
   ShieldCheck,
@@ -34,12 +33,12 @@ export const navItems: NavItem[] = [
     label: "Services",
     children: [
       { label: "Instant Loan", href: "/services/instant-loan", icon: Landmark },
+      { label: "EMI Calculator", href: "/calculators/emi-calculator", icon: Calculator },
       { label: "Recharge & Bill Payments", href: "/services/recharge-bills", icon: Smartphone },
       { label: "Travel (FASTag, NCMC)", href: "/services/travel", icon: Car },
       { label: "Finance & Insurance", href: "/services/finance", icon: ShieldCheck },
       { label: "Entertainment (DTH, OTT)", href: "/services/entertainment", icon: Tv },
       { label: "QuickKhata", href: "/quickkhata", icon: Wallet },
-      
     ],
   },
   {
