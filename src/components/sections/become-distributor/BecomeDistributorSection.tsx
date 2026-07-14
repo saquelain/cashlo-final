@@ -433,9 +433,25 @@ export default function BecomeDistributorSection() {
   }, [bookingId, startPayment]);
 
   useEffect(() => {
-    if (step === "payment" && razorpayLoaded) {
+    if (step !== "payment") return;
+
+    if (razorpayLoaded) {
       initiateOrder();
+      return;
     }
+
+    // If the script genuinely hasn't loaded within 8s (blocked, slow network,
+    // etc.), don't leave the user staring at "Preparing..." forever.
+    const timeout = setTimeout(() => {
+      if (!window.Razorpay) {
+        setPaymentError(
+          "Payment system is taking longer than expected. Please check your connection or disable any ad-blocker, then retry."
+        );
+        setPaymentStatus("dismissed");
+      }
+    }, 8000);
+
+    return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, razorpayLoaded]);
 
@@ -443,8 +459,11 @@ export default function BecomeDistributorSection() {
     <section id="reserve" ref={scope} className="scroll-mt-24 bg-surface py-20 sm:py-24">
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         onLoad={() => setRazorpayLoaded(true)}
+        onError={() =>
+          setPaymentError("Failed to load the payment system. Please check your connection and refresh the page.")
+        }
       />
       <Container className="mx-auto max-w-xl">
 
