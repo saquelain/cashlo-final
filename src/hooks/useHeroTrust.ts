@@ -333,7 +333,7 @@ export function useHeroTrust() {
             "<+=0.2"
           )
           /* hold the finished grid for a beat before releasing the pin */
-          .to({}, { duration: 0.9 });
+          .to({}, { duration: 0.4 });
       });
 
       /* Mobile: no pin, simple staggered reveal for trust cards */
