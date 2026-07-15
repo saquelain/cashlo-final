@@ -361,9 +361,12 @@ export function useHeroTrust() {
     { scope }
   );
 
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(() => ScrollTrigger.refresh());
-  }  
+  // re-measure once web fonts finish swapping in, since a font-driven
+    // layout shift can leave ScrollTrigger's pin start (and any inline
+    // styles gsap already wrote) based on stale measurements
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+        document.fonts.ready.then(() => ScrollTrigger.refresh());
+    }  
 
   return { scope, pinRef };
 }
