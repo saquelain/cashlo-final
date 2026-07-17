@@ -865,3 +865,26 @@ body {
       will-change: auto;
     }
   }
+
+  /* image fills the doorway; sticker floats over its bottom edge */
+.shop__interior { justify-content: flex-end; padding-bottom: 10px; }
+.shop__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.shop__sticker { position: relative; z-index: 2; }
+/* soft brand wash so every image sits in the same palette */
+.shop__interior::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-brand) 6%, transparent),
+    color-mix(in srgb, var(--color-brand) 14%, transparent)
+  );
+  pointer-events: none;
+}

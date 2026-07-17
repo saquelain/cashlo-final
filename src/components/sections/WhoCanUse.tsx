@@ -19,18 +19,18 @@ import {
 } from "lucide-react";
 
 const shops = [
-  { icon: Store, label: "Kirana Stores" },
-  { icon: ShoppingBasket, label: "Grocery Shops" },
-  { icon: Smartphone, label: "Mobile Stores" },
-  { icon: Cross, label: "Medical Stores" },
-  { icon: Tv, label: "Electronics Shops" },
-  { icon: Computer, label: "CSC Centers" },
-  { icon: ShoppingCart, label: "Supermarkets" },
-  { icon: UtensilsCrossed, label: "Restaurants" },
-  { icon: Coffee, label: "Tea Stalls" },
-  { icon: Shirt, label: "Garment Shops" },
-  { icon: Hammer, label: "Hardware Stores" },
-  { icon: PenLine, label: "Stationery Shops" },
+  { icon: Store, label: "Kirana Stores", img: "/shops/kirana-store.jpg" },
+  { icon: ShoppingBasket, label: "Grocery Shops", img: "/shops/grocery-shops.jpg" },
+  { icon: Smartphone, label: "Mobile Stores", img: "/shops/mobile-store.png" },
+  { icon: Cross, label: "Medical Stores", img: "/shops/medical-store.jpg" },
+  { icon: Tv, label: "Electronics Shops", img: "/shops/electronic-shops.jpg" },
+  { icon: Computer, label: "CSC Centers", img: "/shops/csc-center.jpeg" },
+  { icon: ShoppingCart, label: "Supermarkets", img: "/shops/supermarket.jpg" },
+  { icon: UtensilsCrossed, label: "Restaurants", img: "/shops/restaurant.jpg" },
+  { icon: Coffee, label: "Tea Stalls", img: "/shops/tea-stalls.jpg" },
+  { icon: Shirt, label: "Garment Shops", img: "/shops/garment-shops.jpg" },
+  { icon: Hammer, label: "Hardware Stores", img: "/shops/hardware-store.jpg" },
+  { icon: PenLine, label: "Stationery Shops", img: "/shops/stationery-shops.jpg" },
 ];
 
 /* the 13th — "Any Retail Business" — is rendered separately as the
@@ -78,14 +78,12 @@ export default function WhoCanUse() {
 
               {/* doorway: interior behind, shutter in front */}
               <div data-doorway className="shop__doorway">
-                <div data-interior className="shop__interior">
-                  <span className="shop__icon">
-                    <s.icon className="h-6 w-6" strokeWidth={1.75} />
-                  </span>
-                  <span className="shop__sticker">
+              <div data-interior className="shop__interior">
+                <img src={s.img} alt="" className="shop__photo" draggable={false} />
+                <span className="shop__sticker">
                     <i className="shop__qr" aria-hidden="true" />
                     Cashlo accepted
-                  </span>
+                </span>
                 </div>
                 <div data-shutter className="shop__shutter">
                   <span className="shop__handle" aria-hidden="true" />
