@@ -16,8 +16,9 @@ const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
  *    payment success overlay -> flying notes -> earnings tick up)
  *  - magnetic buttons
  *
- * Scroll (desktop): the hero exits and the four trust cards assemble
- * in the same pinned viewport — the handoff you already have.
+ * Scroll (desktop): the hero exits and the ledger-strip trust rows
+ * assemble in the same pinned viewport — restrained left-slide reveal,
+ * no rotation, in keeping with the ledger's minimal register.
  */
 export function useHeroTrust() {
   const scope = useRef<HTMLElement>(null);
@@ -236,7 +237,7 @@ export function useHeroTrust() {
       }
 
       /* ================================================================
-         4) Scroll handoff into trust (unchanged pattern)
+         4) Scroll handoff into trust (ledger reveal)
          ================================================================ */
       if (reduce) {
         section.classList.add("motion-off");
@@ -247,7 +248,8 @@ export function useHeroTrust() {
 
       mm.add("(min-width: 768px)", () => {
         const trust = q("[data-trust]")[0];
-        const cards = q("[data-tcard]");
+        const book = q(".ledger-book")[0];
+        const rows = q("[data-trow]");
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -316,37 +318,44 @@ export function useHeroTrust() {
           .set(trust, { autoAlpha: 1 })
           .fromTo(
             q("[data-thead] > *"),
-            { y: 40, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.7, stagger: 0.1 }
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 }
+          )
+          /* the ledger frame fades in as one piece, then rows tick in
+             left-to-right with a short stagger — no rotation, restrained */
+          .fromTo(
+            book,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.3 },
+            "<+=0.1"
           )
           .fromTo(
-            cards,
-            { y: 180, opacity: 0, rotate: (i: number) => (i % 2 ? 5 : -5) },
+            rows,
+            { x: -24, opacity: 0 },
             {
-              y: 0,
+              x: 0,
               opacity: 1,
-              rotate: 0,
-              duration: 1,
-              stagger: 0.14,
-              ease: "back.out(1.3)",
+              duration: 0.5,
+              stagger: 0.1,
+              ease: "power2.out",
             },
-            "<+=0.2"
+            "<"
           )
-          /* hold the finished grid for a beat before releasing the pin */
+          /* hold the finished ledger for a beat before releasing the pin */
           .to({}, { duration: 0.4 });
       });
 
-      /* Mobile: no pin, simple staggered reveal for trust cards */
+      /* Mobile: no pin, simple staggered reveal for ledger rows */
       mm.add("(max-width: 767px)", () => {
         gsap.fromTo(
-          q("[data-tcard]"),
-          { y: 40, opacity: 0 },
+          q("[data-trow]"),
+          { x: -16, opacity: 0 },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
-            duration: 0.6,
-            ease: "power3.out",
-            stagger: 0.12,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.08,
             scrollTrigger: {
               trigger: q("[data-trust]")[0],
               start: "top 75%",

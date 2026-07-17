@@ -888,3 +888,121 @@ body {
   );
   pointer-events: none;
 }
+
+/* ================================================================
+   Ledger-strip trust section — replaces the image-card grid.
+   Append this to app/globals.css. Uses the site's existing raw theme
+   vars (--brand, --ink, --border, --card) directly so it flips
+   correctly in dark mode, same pattern as the rest of the file.
+   ================================================================ */
+
+   .ledger-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--ink) 55%, transparent);
+  }
+  .ledger-eyebrow::before {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: var(--brand);
+  }
+  
+  .ledger-book {
+    max-width: 880px;
+    margin: 0 auto;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: baseline;
+    column-gap: 20px;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+  }
+  .ledger-row:last-child {
+    border-bottom: none;
+  }
+  .ledger-row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--brand);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.35s ease;
+  }
+  .ledger-row:hover {
+    background: color-mix(in srgb, var(--brand) 5%, transparent);
+    padding-left: 16px;
+  }
+  .ledger-row:hover::before {
+    transform: scaleY(1);
+  }
+  
+  .ledger-row__num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in srgb, var(--ink) 40%, transparent);
+    transition: color 0.3s ease;
+  }
+  .ledger-row:hover .ledger-row__num {
+    color: var(--brand);
+  }
+  
+  .ledger-row__body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .ledger-row__body p {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--ink) 60%, transparent);
+    margin: 0;
+    max-width: 46ch;
+  }
+  
+  .ledger-row__tag {
+    justify-self: end;
+    align-self: center;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--brand);
+    padding: 4px 10px;
+    border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    border-radius: 100px;
+  }
+  
+  @media (max-width: 640px) {
+    .ledger-row {
+      grid-template-columns: 32px 1fr;
+      row-gap: 6px;
+    }
+    .ledger-row__tag {
+      grid-column: 1 / -1;
+      justify-self: start;
+      margin-top: 2px;
+    }
+  }

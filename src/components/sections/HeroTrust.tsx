@@ -15,22 +15,22 @@ const pillars = [
   {
     title: "Real-Time Settlement",
     desc: "Every transaction is protected through secure UPI payment infrastructure with encrypted processing.",
-    img: "/cards/secure.jpg",
+    tag: "< 2 SEC AVG",
   },
   {
     title: "Secure & Reliable Platform",
     desc: "Cashlo follows applicable banking partner processes and operational guidelines.",
-    img: "/cards/guidelines.jpg",
+    tag: "RBI ALIGNED",
   },
   {
     title: "Multiple Income Opportunities",
     desc: "Every payment travels through trusted UPI rails ensuring reliable, fast fund transfers.",
-    img: "/cards/money-transfer.jpg",
+    tag: "UPI RAILS",
   },
   {
     title: "One App for Complete Business Management",
     desc: "Merchant and customer information is handled with strict privacy and security standards.",
-    img: "/cards/data-protection.jpg",
+    tag: "PRIVACY FIRST",
   },
 ];
 
@@ -252,15 +252,19 @@ export default function HeroTrust() {
         </div>
 
         {/* ============================================================
-            STAGE 2 — TRUST (unchanged handoff: overlays the hero on
-            desktop; cards assemble as the phone scene exits)
+            STAGE 2 — TRUST (ledger strip)
+            Minimal ledger-book layout: no imagery, a bordered strip of
+            hairline-ruled rows with tabular numerals, a brand-color
+            left-rail on hover, and a mono "tag" per row. Overlays the
+            hero on desktop; rows assemble as the phone scene exits.
            ============================================================ */}
         <div
           data-trust
           className="ht-trust relative px-6 pb-24 md:absolute md:inset-0 md:flex md:flex-col md:items-center md:justify-center md:px-[3vw] md:pb-0 md:opacity-0"
         >
-          <div data-thead className="mx-auto mb-10 max-w-2xl text-center md:mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          <div data-thead className="mx-auto mb-8 max-w-2xl text-center md:mb-10">
+            <span className="ledger-eyebrow">Trust Ledger</span>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               Trusted by Growing Businesses Across India
             </h2>
             <p className="mt-2 text-base font-medium text-brand">
@@ -268,28 +272,18 @@ export default function HeroTrust() {
             </p>
           </div>
 
-          <div className="grid w-full max-w-[1400px] gap-6 md:grid-cols-4 md:gap-5">
-            {pillars.map((p) => (
-              <article
-                key={p.title}
-                data-tcard
-                className="group relative h-[420px] w-full overflow-hidden rounded-2xl shadow-sm md:h-[52vh] md:min-h-[380px]"
-              >
-                <img
-                  src={p.img}
-                  alt={p.title}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <h3 className="text-xl font-semibold text-white lg:text-2xl">
-                    {p.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/85">
-                    {p.desc}
-                  </p>
+          <div className="ledger-book w-full">
+            {pillars.map((p, i) => (
+              <div key={p.title} data-trow className="ledger-row">
+                <span className="ledger-row__num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="ledger-row__body">
+                  <h3>{p.title}</h3>
+                  <p>{p.desc}</p>
                 </div>
-              </article>
+                <span className="ledger-row__tag">{p.tag}</span>
+              </div>
             ))}
           </div>
         </div>
