@@ -79,7 +79,7 @@ export const distributorApi = {
     post<{ bookingId: string }>("/distributor/send-otp", input),
 
   verifyOtp: (bookingId: string, otp: string) =>
-    post<{ bookingId: string }>("/distributor/verify-otp", { bookingId, otp }),
+    post<{ bookingId: string; manualPayment: boolean }>("/distributor/verify-otp", { bookingId, otp }),
 
   createOrder: (bookingId: string) =>
     post<CreateOrderResult>("/distributor/create-order", { bookingId }),

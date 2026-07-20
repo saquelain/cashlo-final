@@ -333,7 +333,23 @@ export default function BecomeDistributorSection() {
     setOtpLoading(true);
     setOtpError("");
     try {
-      await distributorApi.verifyOtp(bookingId, otpInput);
+      const { manualPayment } = await distributorApi.verifyOtp(bookingId, otpInput);
+
+      if (manualPayment) {
+        sessionStorage.setItem(
+          "cashlo_pending_booking",
+          JSON.stringify({
+            name: form.name,
+            pincode: pincodeResult?.pincode,
+            district: pincodeResult?.district,
+            state: pincodeResult?.state,
+            bookingId,
+          })
+        );
+        router.push("/become-distributor/pending");
+        return;
+      }
+
       setStep("payment");
     } catch (err) {
       setOtpError(err instanceof ApiError ? err.message : "Invalid OTP. Please try again.");
