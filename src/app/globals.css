@@ -1006,3 +1006,77 @@ body {
       margin-top: 2px;
     }
   }
+
+/* ================================================================
+   Supported Apps & Banks — rotating logo wall.
+   Append this to app/globals.css. The old .marquee* block can be
+   deleted (and react-fast-marquee uninstalled) once this is in.
+   Slots are open windows (no pill chrome, like the reference look):
+   overflow-hidden cells where the outgoing logo slides up and out
+   while the incoming one slides up from below.
+   ================================================================ */
+
+   .logo-slot {
+    position: relative;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    /* invisible until hovered, so the resting state reads as a clean
+       logo wall but each cell still lights up as an interactive area */
+    transition: background-color 0.3s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .logo-slot:hover {
+      background: color-mix(in srgb, var(--ink) 4%, transparent);
+    }
+  }
+  
+  .logo-slot__face {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0 1rem;
+  }
+  
+  /* must stay in sync with SWAP_MS in SupportedBy.tsx */
+  .logo-slot__face--enter {
+    animation: logoSwapIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .logo-slot__face--exit {
+    animation: logoSwapOut 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  
+  @keyframes logoSwapIn {
+    from {
+      transform: translateY(115%);
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  @keyframes logoSwapOut {
+    from {
+      transform: none;
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-115%);
+      opacity: 0;
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .logo-slot__face--enter,
+    .logo-slot__face--exit {
+      animation: none;
+    }
+    .logo-slot__face--exit {
+      display: none; /* just show the new logo, no motion */
+    }
+  }

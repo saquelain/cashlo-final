@@ -18,9 +18,9 @@ export default function Home() {
     <main>
       <HeroTrust />
       <Stats />
+      <SupportedBy />
       <WhyChoose />
       <HowItWorks />
-      <SupportedBy />
       <ServiceStack />
       <GstAccounting />
       <WhoCanUse />

@@ -3,9 +3,6 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
 
@@ -16,24 +13,18 @@ const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
  *    payment success overlay -> flying notes -> earnings tick up)
  *  - magnetic buttons
  *
- * Scroll (desktop): the hero exits and the ledger-strip trust rows
- * assemble in the same pinned viewport — restrained left-slide reveal,
- * no rotation, in keeping with the ledger's minimal register.
+ * The scroll-pinned trust handoff has been removed; the hero is now a
+ * plain section that scrolls away normally.
  */
 export function useHeroTrust() {
   const scope = useRef<HTMLElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const section = scope.current;
-      const pin = pinRef.current;
-      if (!section || !pin) return;
+      if (!section) return;
 
       const q = gsap.utils.selector(section);
-      const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
 
       const cleanups: (() => void)[] = [];
 
@@ -75,17 +66,14 @@ export function useHeroTrust() {
       cleanups.push(() => io.disconnect());
 
       // The hero is above the fold, so reveal .rv elements directly on
-      // mount instead of relying on the observer (which could race with
-      // ScrollTrigger's refresh and leave the H1 stuck at opacity 0).
-      // Double rAF so the initial hidden state is committed first and the
-      // CSS transition actually animates.
+      // mount instead of relying on the observer. Double rAF so the
+      // initial hidden state is committed first and the CSS transition
+      // actually animates.
       const raf1 = requestAnimationFrame(() =>
         requestAnimationFrame(() => {
-          const rvEls = section.querySelectorAll(".cx-hero .rv");
-          // wipe any inline opacity/transform GSAP already wrote, so the
-          // .rv.in CSS class rule is what actually governs visibility
-          gsap.set(rvEls, { clearProps: "opacity,transform,transition" });
-          rvEls.forEach((el) => el.classList.add("in"));
+          section
+            .querySelectorAll(".cx-hero .rv")
+            .forEach((el) => el.classList.add("in"));
         })
       );
       cleanups.push(() => cancelAnimationFrame(raf1));
@@ -236,146 +224,10 @@ export function useHeroTrust() {
         );
       }
 
-      /* ================================================================
-         4) Scroll handoff into trust (ledger reveal)
-         ================================================================ */
-      if (reduce) {
-        section.classList.add("motion-off");
-        return () => cleanups.forEach((fn) => fn());
-      }
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 768px)", () => {
-        const trust = q("[data-trust]")[0];
-        const book = q(".ledger-book")[0];
-        const rows = q("[data-trow]");
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: pin,
-            start: "top top",
-            end: "+=300%",
-            scrub: 0.8,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-          defaults: { ease: "power2.inOut" },
-        });
-
-        tl
-          /* the .rv reveal class has a 0.9s CSS transition on transform/
-             opacity — kill it once the scrub starts so it can't fight GSAP */
-          .set(q(".cx-hero .rv"), { transition: "none" }, 0.001)
-          /* copy exits upward.
-             fromTo with EXPLICIT start values (not .to): a .to tween records
-             its start values the first time it renders, and if the user
-             scrolls while the .rv reveal is still mid-transition, it records
-             opacity 0 — then scrubbing back to the top "restores" the
-             headline to invisible. Explicit from-values make the top-of-page
-             state always y:0 / opacity:1. immediateRender:false keeps the
-             from-values from being force-applied at load (which would skip
-             the reveal animation). */
-          .fromTo(
-            q("[data-hero-copy] > *"),
-            { y: 0, opacity: 1 },
-            {
-              y: -70,
-              opacity: 0,
-              duration: 0.8,
-              stagger: 0.06,
-              immediateRender: false,
-            }
-          )
-          /* the whole phone stage (phone, chips, coins, halo) dives away */
-          .fromTo(
-            q("[data-phone-stage]"),
-            { y: 0, scale: 1, opacity: 1 },
-            {
-              y: 150,
-              scale: 0.8,
-              opacity: 0,
-              duration: 1,
-              ease: "power2.in",
-              immediateRender: false,
-            },
-            "<+=0.15"
-          )
-          /* background mesh + orbs melt into the page background
-             (orbs rest at opacity .5, the mesh at 1 — restore each correctly) */
-          .fromTo(
-            q(".cx-hero .mesh, .cx-hero .orb"),
-            {
-              opacity: (_i: number, el: Element) =>
-                el.classList.contains("orb") ? 0.5 : 1,
-            },
-            { opacity: 0, duration: 0.8, immediateRender: false },
-            "<"
-          )
-
-          /* trust layer takes over the same viewport */
-          .set(trust, { autoAlpha: 1 })
-          .fromTo(
-            q("[data-thead] > *"),
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 }
-          )
-          /* the ledger frame fades in as one piece, then rows tick in
-             left-to-right with a short stagger — no rotation, restrained */
-          .fromTo(
-            book,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.3 },
-            "<+=0.1"
-          )
-          .fromTo(
-            rows,
-            { x: -24, opacity: 0 },
-            {
-              x: 0,
-              opacity: 1,
-              duration: 0.5,
-              stagger: 0.1,
-              ease: "power2.out",
-            },
-            "<"
-          )
-          /* hold the finished ledger for a beat before releasing the pin */
-          .to({}, { duration: 0.4 });
-      });
-
-      /* Mobile: no pin, simple staggered reveal for ledger rows */
-      mm.add("(max-width: 767px)", () => {
-        gsap.fromTo(
-          q("[data-trow]"),
-          { x: -16, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: q("[data-trust]")[0],
-              start: "top 75%",
-              once: true,
-            },
-          }
-        );
-      });
-
       return () => cleanups.forEach((fn) => fn());
     },
     { scope }
   );
 
-  // re-measure once web fonts finish swapping in, since a font-driven
-    // layout shift can leave ScrollTrigger's pin start (and any inline
-    // styles gsap already wrote) based on stale measurements
-    if (typeof document !== "undefined" && document.fonts?.ready) {
-        document.fonts.ready.then(() => ScrollTrigger.refresh());
-    }  
-
-  return { scope, pinRef };
+  return { scope };
 }
